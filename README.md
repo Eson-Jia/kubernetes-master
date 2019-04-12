@@ -9,7 +9,7 @@
 - [安装](./setup.sh)
 - [开启服务](./start-kube.sh)
 
-## troublesshoot
+## troubleshooter
 
 ### no API token found for service account default/default
 
