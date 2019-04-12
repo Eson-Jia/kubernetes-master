@@ -12,11 +12,14 @@ spec:
   selector:
     app: nginx
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: web
 spec:
+  selector:
+    matchLabels:
+      app: nginx
   serviceName: "nginx"
   replicas: 2
   template:
@@ -38,8 +41,7 @@ spec:
       name: www
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
       resources:
         requests:
           storage: 1Gi
-
-
