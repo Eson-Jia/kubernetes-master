@@ -34,3 +34,6 @@ mkdir -p /etc/systemd/system/docker.service.d
 # Restart Docker
 systemctl daemon-reload
 systemctl restart docker
+
+#设置系统服务，如果不设置后面 kubeadm init 的时候会有 warning
+systemctl enable docker.service
