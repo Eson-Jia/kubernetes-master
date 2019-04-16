@@ -15,6 +15,12 @@ centos7 网络每次重启都需要开启，设置为自动连接
 container runtime interface
 [脚本](./docker-cri.sh)
 
+## 关闭swap分区
+
+```bash
+# swapoff -a
+```
+
 ## 安装 kubeadm, kubelet 和 kubectl
 
 [脚本](./install-kubeadm-kubelet-kubectl.sh)
