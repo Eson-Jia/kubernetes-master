@@ -19,6 +19,9 @@ container runtime interface
 
 ```bash
 # swapoff -a
+
+vim /etc/fstab
+# 注释掉 swap那一行
 ```
 
 ## 安装 kubeadm, kubelet 和 kubectl
