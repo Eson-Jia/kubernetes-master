@@ -18,3 +18,12 @@
 ### SchedulerPredicates failed due to PersistentVolumeClaim
 
 需要学习k8s中的[volume](https://kubernetes.io/docs/concepts/storage/volumes/)
+
+### open /etc/docker/certs.d/registry.access.redhat.com/redhat-ca.crt: no such file or directory
+
+```bash
+openssl s_client -showcerts -servername registry.access.redhat.com -connect registry.access.redhat.com:443 </dev/null 2>/dev/null | openssl x509 -text > /etc/rhsm/ca/redhat-uep.pem
+```
+
+### kubelet does not have ClusterDNS IP configured and cannot
+
