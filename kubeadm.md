@@ -100,4 +100,13 @@ systemctl enable docker.service
 
 coreDNS 开始能正常工作但 master 节点重启之后就 crashloopbackoff
 
+将防火墙关闭后问题解决，命令：
+
+```bash
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+```
+
+反思，这是因为没有验证防火墙对服务端口的影响，文档开头明明白白写着需要注意验证这些。
+
 [参考](https://github.com/coredns/coredns/issues/2325)
