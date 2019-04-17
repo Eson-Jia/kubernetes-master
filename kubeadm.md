@@ -15,6 +15,11 @@ centos7 网络每次重启都需要开启，设置为自动连接
 container runtime interface
 [脚本](./docker-cri.sh)
 
+## 将所需镜像下载到本地
+
+因为墙的问题需要将镜像下到本地
+[镜像列表](./image.md)
+
 ## 关闭swap分区
 
 ```bash
@@ -84,6 +89,27 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 ```
+
+## 添加node节点
+
+- 关闭node节点防火墙
+- 将`master`节点需要的`k8s.gcr.io/XXX`镜像同样`pull`到`node`节点上去
+- 运行
+
+```bash
+kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
+```
+
+token 可以在`master`节点运行`kubeadm token list`获取
+
+--discovery-token-ca-cert-hash 可以通过如下命令获取：
+
+```bash
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
+   openssl dgst -sha256 -hex | sed 's/^.* //'
+```
+
+[参考](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#join-nodes)
 
 ## troubleshooter
 
