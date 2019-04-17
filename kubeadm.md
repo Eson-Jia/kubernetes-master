@@ -38,3 +38,8 @@ EOF
 sysctl --system
 ```
 
+## kubeadm init
+
+```bash
+kubeadm init --kubernetes-version v1.14.1 --pod-network-cidr=10.244.0.0/16
+```
