@@ -93,6 +93,10 @@ openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outfor
 
 [参考](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#join-nodes)
 
+## 使用sonobuoy测试集群是否正常
+
+[sonobuoy](https://github.com/heptio/sonobuoy)
+
 ## troubleshooter
 
 ### docker 未开启
