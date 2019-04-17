@@ -54,27 +54,6 @@ sysctl --system
 kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
 ```
 
-成功提示:
-
-```bash
-Your Kubernetes control-plane has initialized successfully!
-
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 192.168.1.43:6443 --token wqj3aj.lfnk85vqi37ha9mf \
-    --discovery-token-ca-cert-hash sha256:27166d951180b268309d0d458231d6920beba83cb999d2bdce1f48eabc669496
-```
-
 ## To make kubectl work for your non-root user
 
 [脚本](./kubectl-non-root.sh)
@@ -89,6 +68,8 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 ```
+
+`master`节点以配置完毕，接下来需要配置`node`节点
 
 ## 添加node节点
 
