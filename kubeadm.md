@@ -46,7 +46,7 @@ sysctl --system
 ## kubeadm init
 
 ```bash
-kubeadm init --kubernetes-version v1.14.1 --pod-network-cidr=10.244.0.0/16
+kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
 ```
 
 成功提示:
@@ -90,3 +90,14 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be008450
 ### docker 未开启
 
 systemctl enable docker.service
+
+### coreDNS 不能正常工作
+
+使用命令`ubectl describe pod/coredns-xxxxxx -n kube-system`
+发现`Warning  Unhealthy Readiness probe failed: HTTP probe failed with statuscode: 503`
+
+### coreDNS 重启后报 crashloopbackoff
+
+coreDNS 开始能正常工作但 master 节点重启之后就 crashloopbackoff
+
+[参考](https://github.com/coredns/coredns/issues/2325)
