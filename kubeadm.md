@@ -96,6 +96,8 @@ systemctl enable docker.service
 使用命令`ubectl describe pod/coredns-xxxxxx -n kube-system`
 发现`Warning  Unhealthy Readiness probe failed: HTTP probe failed with statuscode: 503`
 
+将防火墙关闭后
+
 ### coreDNS 重启后报 crashloopbackoff
 
 coreDNS 开始能正常工作但 master 节点重启之后就 crashloopbackoff
