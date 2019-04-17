@@ -93,6 +93,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be008450
 ## 添加node节点
 
 - 关闭node节点防火墙
+- (可选)为了好辨识各个节点可以使用`hostnamectl set-hostname 节点名`修改节点的`hostname`否则`centos7`系统会显示为`bogon`
 - 将`master`节点需要的`k8s.gcr.io/XXX`镜像同样`pull`到`node`节点上去
 - 运行
 
