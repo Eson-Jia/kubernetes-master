@@ -65,8 +65,9 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be008450
 
 ## 添加node节点
 
-- 关闭node节点防火墙
-- (可选)为了好辨识各个节点可以使用`hostnamectl set-hostname 节点名`修改节点的`hostname`否则`centos7`系统会显示为`bogon`
+- 关闭node节点防火墙(ubuntu默认没有开)
+- 修改`/etc/resolvconf/resolv.conf.d/head`在里面追加 `nameserver 8.8.8.8(或者其他非本地dns服务器)`这是为了解决[coredns forward loop](### coredns forward loop)
+- (可选)为了好辨识各个节点可以使用`hostnamectl set-hostname 节点名`修改节点的`hostname`
 - 将`master`节点需要的`k8s.gcr.io/XXX`镜像同样`pull`到`node`节点上去
 - 运行
 
@@ -102,17 +103,15 @@ systemctl enable docker.service
 
 将防火墙关闭后
 
-### coreDNS 重启后报 crashloopbackoff
+### coreDNS 状态是 crashloopbackoff
 
-coreDNS 开始能正常工作但 master 节点重启之后就 crashloopbackoff
+当CoreDNS日志包含消息时Loop ... detected ...，这意味着loop检测插件已在其中一个上游DNS服务器中检测到无限转发循环。这是一个致命的错误，因为使用无限循环操作将占用内存和CPU，直到主机最终导致内存不足。
+转发循环通常由以下原因引起：
+最常见的是，CoreDNS直接向自己转发请求。例如，通过环回地址，例如127.0.0.1，::1或127.0.0.53
+不常见的是，CoreDNS转发到上游服务器，而上游服务器又将请求转发回CoreDNS。
+[参考](https://coredns.io/plugins/loop/#troubleshooting)
+解决方法:
 
-将防火墙关闭后问题解决，命令：
+1. 临时方法: 将`k8s slave`节点主机中`/etc/resolv.conf`文件内`nameserver`改为`8.8.8.8`或者其他非本地`dns`服务器,但是重启后就覆盖了。
 
-```bash
-sudo systemctl disable firewalld
-sudo systemctl stop firewalld
-```
-
-反思，这是因为没有验证防火墙对服务端口的影响，文档开头明明白白写着需要注意验证这些。
-
-[参考](https://github.com/coredns/coredns/issues/2325)
+2. ubuntu 16.04 永久方法: 修改 `/etc/resolvconf/resolv.conf.d/head`文件，在里面添加`nameserver 8.8.8.8(或其他非本地 dns 服务器)`
