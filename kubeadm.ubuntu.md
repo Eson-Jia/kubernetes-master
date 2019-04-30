@@ -42,6 +42,8 @@ vim /etc/fstab
 kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
 ```
 
+完后成会在终端打印
+
 ## To make kubectl work for your non-root user
 
 ```bash
@@ -69,12 +71,15 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be008450
 - 修改`/etc/resolvconf/resolv.conf.d/head`在里面追加 `nameserver 8.8.8.8(或者其他非本地dns服务器)`这是为了解决[coredns forward loop](### coredns forward loop)
 - (可选)为了好辨识各个节点可以使用`hostnamectl set-hostname 节点名`修改节点的`hostname`
 - 将`master`节点需要的`k8s.gcr.io/XXX`镜像同样`pull`到`node`节点上去
-- 运行
+- 运行下面命令加入集群
 
 ```bash
 kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
+成功的话输出最后一行会是`Run 'kubectl get nodes'..... cluster.`
+
+ps:
 token 可以在`master`节点运行`kubeadm token list`获取
 
 --discovery-token-ca-cert-hash 可以通过如下命令获取：
@@ -115,3 +120,17 @@ systemctl enable docker.service
 1. 临时方法: 将`k8s slave`节点主机中`/etc/resolv.conf`文件内`nameserver`改为`8.8.8.8`或者其他非本地`dns`服务器,但是重启后就覆盖了。
 
 2. ubuntu 16.04 永久方法: 修改 `/etc/resolvconf/resolv.conf.d/head`文件，在里面添加`nameserver 8.8.8.8(或其他非本地 dns 服务器)`
+
+### couldn't validate the identity of the API Server
+
+详情如下:
+
+```bash
+[preflight] Running pre-flight checks
+    [WARNING Hostname]: hostname "node-5" could not be reached
+    [WARNING Hostname]: hostname "node-5": lookup node-5 on 127.0.1.1:53: no such host
+error execution phase preflight: couldn't validate the identity of the API Server: abort connecting to API servers after timeout of 5m0s
+```
+
+原因是`token`失效，在`master`节点使用命令`kubectl token create`重新创建 token
+[参考](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#join-nodes)
