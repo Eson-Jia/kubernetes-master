@@ -1,3 +1,5 @@
+# docker image
+
 k8s.gcr.io/kube-apiserver:v1.14.1
 k8s.gcr.io/kube-controller-manager:v1.14.1
 k8s.gcr.io/kube-scheduler:v1.14.1
